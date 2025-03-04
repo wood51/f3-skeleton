@@ -1,0 +1,12 @@
+{
+    "name": "wood51/f3-route",
+    "description": "Un plugin pour Fat-Free Framework",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "require": {}
+}
