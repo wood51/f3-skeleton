@@ -1,11 +1,11 @@
 <?php
 class AuthController {
     /**
-     * @ajax
+     * @sync
      * @route("GET /auth")
      */
     function index() {
-        echo "Hello Auth !!!!<br>";
-        echo "<pre>".print_r(Base::instance()->ROUTES,true)."</pre>";
+        echo "<br>Hello Auth !!!!<br>";
+        
     }
 }

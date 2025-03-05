@@ -4,89 +4,100 @@
 class AnnotationRoutingPlugin extends Prefab
 {
 
-    private $f3;
-    private $chemin;
-
     public function __construct()
     {
-        $this->f3 = \Base::instance();
-
-        $this->chemin = $this->f3->get('AUTOLOAD');
-
-        $controllers = [];
-
-        // Diviser les chemins en fonction du délimiteur '|'
-        $directories = explode('|', $this->chemin);
-
-        foreach ($directories as $directory) {
-            if (!is_dir($directory)) {
-                $this->f3->error(500, "Le chemin vers les contrôleurs est erroné: $directory");
-                return;
-            }
-
-            $files = scandir($directory);
-
-            foreach ($files as $file) {
-                if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                    $controllerName = pathinfo($file, PATHINFO_FILENAME);
-                    $controllers[] = $controllerName;
-                }
-            }
-        }
-
-        $this->routeFromAnnotations($controllers);
+            $autoload = \Base::instance()->AUTOLOAD;
+            $controllers = $this->getControllers($autoload);
+            $this->routeFromAnnotations($controllers);
     }
 
-    function routeFromAnnotations($controllers)
+    private function getControllers($autoload) {
+        $controllers = [];
+        $directories = explode('|', $autoload);
+    
+        foreach ($directories as $directory) {
+            if (!is_dir($directory)) {
+                throw new \Exception("Le chemin vers les contrôleurs est erroné: $directory");
+            }
+    
+            foreach (glob($directory . '/*.php') as $file) {
+                $controllers[] = pathinfo($file, PATHINFO_FILENAME);
+            }
+        }
+    
+        return $controllers;
+    }
+
+    private function routeFromAnnotations($controllers)
     {
-        foreach ($controllers as $controllerClass) {
+        $f3 = \Base::instance();
+        // 3 foreach imbriquer avec pas mal de code a divisé ???!!!!
+        foreach ($controllers as $controllerClass) {  // for each principal 
 
             try {
                 $reflectionClass = new ReflectionClass($controllerClass);
             } catch (ReflectionException $e) {
-                $this->f3->error(500, "Erreur avec le contrôleur $controllerClass : " . $e->getMessage());
+                trigger_error("Erreur avec le contrôleur $controllerClass : " . $e->getMessage(), E_USER_WARNING);
                 return;
             }
 
 
             $methods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
 
-            foreach ($methods as $method) {
+            foreach ($methods as $method) { // for each de récup type de route 
                 $docComment = $method->getDocComment();
                 if ($docComment) {
                     // Capture les annotations @route et @ajax
-                    preg_match_all('/@([aA]jax|[rR]oute)(?:\\("([^"]+)"\\))?/', $docComment, $matches, PREG_SET_ORDER);
+                    preg_match_all('/@([aA]jax|[sS]ync|[rR]oute)(?:\\("([^"]+)"\\))?/', $docComment, $matches, PREG_SET_ORDER);
 
                     $isAjax = false;
+                    $isSync = false;
                     $routes = [];
 
                     foreach ($matches as $match) {
                         [$fullMatch, $annotationType, $routePath] = $match + [null, null, null];
 
-                        if (strtolower($annotationType) === 'ajax') {
-                            $isAjax = true;
-                        } elseif (strtolower($annotationType) === 'route' && $routePath !== null) {
-                            $routes[] = $routePath;
+                        switch (strtolower($annotationType)) {
+                            case "route":
+                                $routes[] = $routePath;
+                                break;
+
+                            case "ajax":
+                                $isAjax = true;
+                                break;
+
+                            case "sync":
+                                $isSync = true;
+                                break;
                         }
                     }
 
-                    if ($isAjax && empty($routes)) {
-                        trigger_error("L'annotation @ajax ne peut pas être utilisée seule sans @route(\"...\")", E_USER_WARNING);
+                    if (($isAjax || $isSync) && empty($routes)) {
+                        trigger_error("L'annotation @ajax ou @sync ne peuvent pas être utilisée seule sans @route(\"...\")", E_USER_WARNING);
                         return;
                     }
 
+                    if (($isAjax && $isSync)) {
+                        trigger_error("L'annotation @ajax ou @sync ne peuvent pas être utilisée conjointement", E_USER_WARNING);
+                        return;
+                    }
 
-                    foreach ($routes as $route) {
+                    foreach ($routes as $route) { // for each pour générer la route et vérif que le "verbe" est correct
 
                         if (!preg_match('/^(GET|POST|PUT|DELETE|OPTIONS) \\/[a-zA-Z0-9_\\/-]*$/', $route)) {
                             trigger_error("Annotation de route malformée dans $controllerClass->" . $method->getName(), E_USER_WARNING);
-                            continue;
+                            return;
                         }
 
                         list($httpMethod, $path) = explode(' ', $route, 2);
-                        $routeName = "$httpMethod $path" . ($isAjax ? " [ajax]" : "");
+
+                        if ($isAjax) $path .= " [ajax]";
+                        if ($isSync) $path .= " [sync]";
+
+                        $routeName = "$httpMethod $path"; // . ($isAjax ? " [ajax]" : "");
                         $controllerMethod = "$controllerClass->{$method->getName()}";
-                        $this->f3->route($routeName, $controllerMethod);
+                        echo "<li>route(\"$routeName\",$controllerMethod)";
+                        $f3->route($routeName, $controllerMethod);
                     }
                 }
             }
