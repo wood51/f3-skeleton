@@ -1,0 +1,6 @@
+{
+    "require": {
+        "wood51/f3-route": "^1.0",
+        "bcosca/fatfree-core": "^3.9"
+    }
+}
