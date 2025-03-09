@@ -1,0 +1,44 @@
+<?php
+// Vérifie que le nom du module est passé en argument
+$moduleName =ucfirst($argv[1]) ?? null;
+if (!$moduleName) {
+    echo "Usage: php create_module.php NomDuModule\n";
+    exit(1);
+}
+
+// Dossiers de base à créer pour chaque module
+$baseDirs = [
+    "../app/controllers",
+    "../app/models",
+    "../app/views",
+    "../app/services"
+];
+
+// Création des dossiers spécifiques au module
+foreach ($baseDirs as $dir) {
+    $moduleDir = $dir . DIRECTORY_SEPARATOR . $moduleName;
+    if (!is_dir($moduleDir)) {
+        mkdir($moduleDir, 0777, true);
+        echo "Création du dossier $moduleDir\n";
+    } else {
+        echo "Le dossier $moduleDir existe déjà.\n";
+    }
+}
+
+// Exemple : création d'un fichier de controller de base dans app/controllers
+$controllerFile = "../app/controllers/$moduleName/$moduleName"."Controller.php";
+if (!file_exists($controllerFile)) {
+    $content = "<?php\n\n" .
+               "class $moduleName"."Controller {\n" .
+               "    /**".
+               "    /*@route(\"GET /".strtolower($moduleName)."\")".
+               "    */".
+               "    public function index() {\n" .
+               "        echo 'Bienvenue sur le module {$moduleName} !';\n" .
+               "    }\n" .
+               "}\n";
+    file_put_contents($controllerFile, $content);
+    echo "Création du contrôleur $controllerFile\n";
+} else {
+    echo "Le contrôleur $controllerFile existe déjà.\n";
+}

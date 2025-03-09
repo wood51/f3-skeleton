@@ -1,0 +1,10 @@
+{
+    "auth": {
+        "enabled": false,
+        "autoload": "app/controllers/Auth"
+    },
+    "base": {
+        "enabled": 1,
+        "autoload": "app/controllers/base"
+    }
+}
