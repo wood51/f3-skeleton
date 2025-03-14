@@ -1,0 +1,4 @@
+/docker/conf/certs/*.crt
+/docker/conf/certs/*.key
+/docker/.env
+/tmp

@@ -1,0 +1,29 @@
+RewriteEngine On
+
+# Redirection vers HTTPS
+ RewriteCond %{HTTPS} off
+ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteBase /
+
+# Empêcher l'accès aux répertoires sensibles et aux fichiers .ini
+#RewriteRule ^(app|dict|ns|tmp)\/|\.ini$ - [R=404,NC,L]
+
+# Protéger les fichiers sensibles comme .env, .ini, .log, etc.
+<FilesMatch "\.(env|ini|log|sh|bak|sql)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Empêcher la navigation dans les répertoires
+Options -Indexes
+
+# Les conditions pour rediriger toutes les requêtes vers index.php
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* index.php [L,QSA]
+
+# Passer l'authentification HTTP si elle existe
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+

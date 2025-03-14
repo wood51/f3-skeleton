@@ -4,17 +4,14 @@ require("vendor/autoload.php");
 
 $f3 = \Base::instance();
 $f3->DEBUG = 3;
-$f3->PACKAGE ="Guinault";
+$f3->PACKAGE ="wood51";
 
-$f3->AUTOLOAD = "app/controllers/|app/services/|app/test/";
-
-//AnnotationRoutingPlugin::instance();
+$f3->AUTOLOAD = "app/services/";
+$f3->UI ="app/views";
 
 $modules = \ModulesCore::instance();
+$modules->load("auth");
+AnnotationRoutingPlugin::instance();
 
-echo var_dump($modules->get_module_list())."<br>";
-echo $modules->is_enabled("auth")."<br>";
-$modules->disable("auth");
-echo $modules->is_enabled("auth")."<br>";
-$modules->save();
+
 $f3->run();
