@@ -7,7 +7,7 @@ $f3->DEBUG = 3;
 $f3->PACKAGE ="wood51";
 
 $f3->set("DEBUG",3);
-//$f3->set('CACHE', true);
+
 // Configurer la base de données MariaDB
 try {
     $db_name = getenv('MARIADB_DATABASE');
