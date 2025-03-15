@@ -1,6 +1,3 @@
 {
-    "auth": {
-        "enabled": true,
-        "autoload": "app/controllers/Auth"
-    }
+   
 }
