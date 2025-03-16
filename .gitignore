@@ -2,3 +2,4 @@
 /docker/conf/certs/*.key
 /docker/.env
 /tmp
+f3-skeleton.code-workspace

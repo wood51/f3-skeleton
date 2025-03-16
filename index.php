@@ -21,12 +21,12 @@ try {
     die("Erreur de connexion à MariaDB : " . $e->getMessage());
 }
 
-$f3->AUTOLOAD = "app/services/";
+$f3->AUTOLOAD = "app/controllers/core/|app/services/";
 $f3->UI ="app/views";
 $f3->TZ ="Europe/Paris";
 
 $modules = \ModulesCore::instance();
-//  $modules->load("auth");
+$modules->load();
 AnnotationRoutingPlugin::instance();
 
 $f3->run();
