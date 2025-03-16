@@ -9,7 +9,7 @@ class MainController extends BaseController
 
     $menu = [
       ['title' => 'Accueil','url' => '/'],
-      ['title' => 'Admin','url' => '/admin','role'=>'admin'],
+      ['title' => 'Admin','url' => '/admin'],
       ['title' => 'Logout', 'url' => '/logout'],
     ];
 

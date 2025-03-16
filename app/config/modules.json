@@ -1,2 +1,5 @@
 {
+  "bidon": {
+    "enabled": true
+  }
 }

@@ -19,26 +19,22 @@
         <repeat group="{{@menu}}" value="{{@item}}">
           <check if="{{isset(@item.submenu)}}">
             <true>
-              <check if="{{ @SESSION.role === 'admin' }}">
-                <!-- Avec sous-menu -->
-                <div class="mb-4">
-                  <div class="font-semibold px-3 py-2">{{@item.title}}</div>
-                  <ul class="pl-4">
-                    <repeat group="{{@item.submenu}}" value="{{@subitem}}">
-                      <li>
-                        <a href="{{@subitem.url}}" class="block px-3 py-1 hover:bg-gray-700 rounded"> {{@subitem.title}} </a>
-                      </li>
-                    </repeat>
-                  </ul>
-                </div>
-              </check>
+              <!-- Avec sous-menu -->
+              <div class="mb-4">
+                <div class="font-semibold px-3 py-2">{{@item.title}}</div>
+                <ul class="pl-4">
+                  <repeat group="{{@item.submenu}}" value="{{@subitem}}">
+                    <li>
+                      <a href="{{@subitem.url}}" class="block px-3 py-1 hover:bg-gray-700 rounded"> {{@subitem.title}} </a>
+                    </li>
+                  </repeat>
+                </ul>
+              </div>
             </true>
             <false>
               <!-- Sans sous-menu, lien direct -->
               <div class="mb-2">
-                <check if="{{ @SESSION.role === 'admin' }}">
-                  <a href="{{@item.url}}" class="block font-semibold px-3 py-2 hover:bg-gray-700 rounded"> {{@item.title}} </a>
-                </check>
+                <a href="{{@item.url}}" class="block font-semibold px-3 py-2 hover:bg-gray-700 rounded"> {{@item.title}} </a>
               </div>
             </false>
           </check>
