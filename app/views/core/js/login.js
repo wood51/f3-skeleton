@@ -17,12 +17,7 @@ document.getElementById("login-form").addEventListener("submit", async (event) =
   const errorMessage = document.getElementById("error-message");
 
   try {
-    // let response = await fetch("/auth/login", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ username, password, csrf_token }) // Ajout du token si nécessaire
-    // });
-    let response = await fetch("/auth/login", {
+    let response = await fetch("/auth", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

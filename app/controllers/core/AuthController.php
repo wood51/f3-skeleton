@@ -19,11 +19,11 @@ class AuthController
                 "samesite" => "Strict"
             ]
         );
-        echo \Template::instance()->render("/auth/templates/login.html");
+        echo \Template::instance()->render("/core/templates/login.html");
     }
 
     /**
-     * @route("POST /auth/login")
+     * @route("POST /auth")
      */
     public function login($f3)
     {
@@ -92,7 +92,7 @@ class AuthController
     }
 
     /**
-     * @route("GET /auth/logout")
+     * @route("GET /logout")
      */
     public function logout($f3)
     {
@@ -103,24 +103,26 @@ class AuthController
     /**
      * @route("GET /admin/auth")
      */
-    public function admin($f3) {
+    public function admin($f3)
+    {
         $f3->set('menu', [
+            ['title' => 'Acceuil', 'url' => '/admin'],
             [
-              'title' => 'Utilisateurs',
-              'submenu' => [
-                ['title' => 'Liste des utilisateurs', 'url' => '/admin/users'],
-                ['title' => 'Ajouter utilisateur', 'url' => '/admin/users/add'],
-              ]
+                'title' => 'Utilisateurs',
+                'submenu' => [
+                    ['title' => 'Liste des utilisateurs', 'url' => '/admin/users'],
+                    ['title' => 'Ajouter utilisateur', 'url' => '/admin/users/add'],
+                ]
             ],
             [
-              'title' => 'Gestion des Rôles',
-              'submenu' => [
-                ['title' => 'Liste des rôles', 'url' => '/admin/roles'],
-                ['title' => 'Ajouter rôle', 'url' => '/admin/roles/add'],
-              ]
+                'title' => 'Gestion des Rôles',
+                'submenu' => [
+                    ['title' => 'Liste des rôles', 'url' => '/admin/roles'],
+                    ['title' => 'Ajouter rôle', 'url' => '/admin/roles/add'],
+                ]
             ],
             // chaque module peut ajouter ses propres items simplement ici
-          ]);
-        echo \Template::instance()->render("/auth/templates/admin.html");
+        ]);
+        echo \Template::instance()->render("/core/templates/layout_admin.html");
     }
 }
