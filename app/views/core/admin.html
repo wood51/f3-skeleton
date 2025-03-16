@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{@@title ?: 'Administration'}}</title>
+    <link href="{{@BASE}}/{{@UI}}/common/css/output.css" rel="stylesheet" />
+  </head>
+  <body class="flex bg-gray-100 h-screen overflow-hidden">
+    <!-- Sidebar modulaire -->
+    <aside class="w-64 bg-gray-800 text-white flex flex-col">
+      <div class="h-24 flex items-center justify-center border-b border-gray-700">
+        <img src="{{@BASE}}/{{@UI}}/assets/gear.png" width="60" />
+        <a href="/admin"><span class="text-3xl font-semibold text-indigo-400">Admin</span></a>
+      </div>
+
+      <!-- Menu dynamique -->
+      <nav class="p-4 overflow-auto">
+        <repeat group="{{@menu}}" value="{{@item}}">
+          <check if="{{isset(@item.submenu)}}">
+            <true>
+              <!-- Avec sous-menu -->
+              <div class="mb-4">
+                <div class="font-semibold px-3 py-2">{{@item.title}}</div>
+                <ul class="pl-4">
+                  <repeat group="{{@item.submenu}}" value="{{@subitem}}">
+                    <li>
+                      <a href="{{@subitem.url}}" class="block px-3 py-1 hover:bg-gray-700 rounded"> {{@subitem.title}} </a>
+                    </li>
+                  </repeat>
+                </ul>
+              </div>
+            </true>
+            <false>
+              <!-- Sans sous-menu, lien direct -->
+              <div class="mb-2">
+                <a href="{{@item.url}}" class="block font-semibold  px-3 py-2 hover:bg-gray-700 rounded"> {{@item.title}} </a>
+              </div>
+            </false>
+          </check>
+        </repeat>
+      </nav>
+    </aside>
+
+    <!-- Zone contenu principal -->
+    <main class="flex-1 flex flex-col overflow-auto">
+      <header class="bg-white h-24 shadow px-6 flex items-center justify-between">
+        <h1 class="text-3xl font-semibold text-gray-800">{{@@page_title ?: 'Bienvenue'}}</h1>
+        <div id="clock" class="font-mono text-gray-600 text-xl">12:00</div>
+      </header>
+
+      <div class="p-6 flex-grow">
+        <include href="{{@@content}}" />
+      </div>
+    </main>
+
+    <script type="module" src="{{@UI}}js/templates/admin/admin.js"></script>
+  </body>
+</html>

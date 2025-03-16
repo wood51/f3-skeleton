@@ -171,4 +171,19 @@ class ModulesCore extends \Prefab
 
         $f3->set("AUTOLOAD", $new_autoload);
     }
+
+    public function get_menu()
+    {
+        $menus = [];
+
+        foreach ($this->modules as $module_name => $module) {
+            if($module->enabled) {
+                $controller_class = ucfirst($module_name)."AdminController";
+                if(class_exists($controller_class) && method_exists($controller_class, 'menu')){
+                    $menus[] = $controller_class::menu();
+                }
+            }
+        }
+        return $menus;
+    }
 }
