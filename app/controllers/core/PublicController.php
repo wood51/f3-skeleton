@@ -1,5 +1,5 @@
 <?php 
-class CorePublicController {
+class PublicController {
 
   /**
    * @route("GET /public")

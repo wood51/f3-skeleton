@@ -21,7 +21,7 @@ try {
     die("Erreur de connexion à MariaDB : " . $e->getMessage());
 }
 
-$f3->AUTOLOAD = "app/controllers/core/|app/services/core/";
+$f3->AUTOLOAD = "app/controllers/core/|app/controllers/core/auth/|app/services/core/";
 $f3->UI ="app/views";
 $f3->TZ ="Europe/Paris";
 

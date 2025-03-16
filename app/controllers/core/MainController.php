@@ -1,5 +1,5 @@
 <?php
-class CoreController extends BaseController
+class MainController extends BaseController
 {
 
   static function loadMenu()
@@ -10,7 +10,7 @@ class CoreController extends BaseController
     $menu = [
       ['title' => 'Accueil','url' => '/'],
       ['title' => 'Admin','url' => '/admin','role'=>'admin'],
-      ['title' => 'Logout', 'url' => '/auth/logout'],
+      ['title' => 'Logout', 'url' => '/logout'],
     ];
 
     // Ajouter dynamiquement les menus modules
@@ -24,7 +24,7 @@ class CoreController extends BaseController
    */
   public function index($f3)
   {
-     $this->loadMenu();
+    $this->loadMenu();
     echo \Template::instance()->render("/core/templates/layout.html");
   }
 

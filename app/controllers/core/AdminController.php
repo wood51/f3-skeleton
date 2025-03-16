@@ -6,8 +6,8 @@ class AdminController {
       $moduleCore = \ModulesCore::instance();
 
       $menu = [
-          ['title' => 'Accueil', 'url' => '/admin'],
-          ['title' => 'Logout', 'url' => '/auth/logout'],
+          ['title' => 'Accueil', 'url' => '/'],
+          ['title' => 'Logout', 'url' => '/logout'],
       ];
       
       // Ajouter dynamiquement les menus modules
