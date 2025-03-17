@@ -9,14 +9,14 @@ class MainController extends BaseController
 
     $menu = [
       ['title' => 'Accueil','url' => '/'],
-      ['title' => 'Admin','url' => '/admin'],
+      ['title' => 'Admin','url' => '/admin','admin'=>true],
       ['title' => 'Logout', 'url' => '/logout'],
     ];
 
     // Ajouter dynamiquement les menus modules
     $menu = array_merge($menu, $moduleCore->get_menu());
-
-    $f3->set('menu', $menu);
+    return $menu;
+    //$f3->set('menu', $menu);
   }
 
   /**
@@ -24,7 +24,10 @@ class MainController extends BaseController
    */
   public function index($f3)
   {
-    $this->loadMenu();
+    $MenuCore = \MenuCore::instance();
+    $menu = $this->loadMenu();
+    $f3->menu = $MenuCore->filter_admin($menu,$f3->get("SESSION.role"));
+  
     echo \Template::instance()->render("/core/templates/layout.html");
   }
 

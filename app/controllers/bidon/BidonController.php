@@ -21,7 +21,6 @@ class BidonController extends BaseController
      * @route("GET /bidon")
      */
     function bidon ($f3) {
-        \MenuHelper::instance()->filter_menu();
         $f3->content="/bidon/bidon.html";
         MainController::loadMenu();
         echo \Template::instance()->render("/core/templates/layout.html");

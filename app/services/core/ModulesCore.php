@@ -186,4 +186,5 @@ class ModulesCore extends \Prefab
         }
         return $menus;
     }
+
 }
