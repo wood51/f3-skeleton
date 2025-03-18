@@ -98,6 +98,15 @@ class ModulesCore extends \Prefab
     }
 
     /**
+     * Recupère l'objet modules
+     * 
+     * @return object Modules en mémoire
+     */
+    public function get_modules() {
+        return $this->modules;
+    }
+
+    /**
      * Récupère la liste des modules disponibles.
      *
      * @return array Liste des noms de modules.
@@ -172,19 +181,6 @@ class ModulesCore extends \Prefab
         $f3->set("AUTOLOAD", $new_autoload);
     }
 
-    public function get_menu()
-    {
-        $menus = [];
-
-        foreach ($this->modules as $module_name => $module) {
-            if($module->enabled) {
-                $controller_class = ucfirst($module_name)."Controller";
-                if(class_exists($controller_class) && method_exists($controller_class, 'menu')){
-                    $menus = $controller_class::menu();
-                }
-            }
-        }
-        return $menus;
-    }
+    
 
 }
