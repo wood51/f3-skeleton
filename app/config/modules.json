@@ -1,5 +1,10 @@
 {
+<<<<<<< HEAD
   "toles" : {
     "enabled" : true
+=======
+  "toles": {
+    "enabled":"true"
+>>>>>>> 17c393c81045e3f461bb2d6096973e9f939fc1b1
   }
 }
