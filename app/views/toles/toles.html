@@ -1,0 +1,127 @@
+    <div class="w-3/4 bg-white p-6 rounded-lg shadow-lg self-center m-16">
+      <h2 class="text-2xl font-bold mb-4 text-center">Gestion des lots de tôle</h2>
+
+      <button id="openModal" class="mb-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">+ Ajouter un lot</button>
+
+      <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-blue-200">
+            <th class="border p-2">N° de lot</th>
+            <th class="border p-2">Référence</th>
+            <th class="border p-2">Quantité Servie</th>
+            <th class="border p-2">Poids</th>
+            <th class="border p-2">Date de Fabrication</th>
+            <th class="border p-2">Date de Reception Guinault</th>
+            <th class="border p-2">Date de Reception Dee</th>
+            <th class="border p-2">Quantité Rebut</th>
+            <th class="border p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody" class="font-semibold">
+          <repeat group="{{@lots}}" value="{{@lot}}">
+            <tr class="text-center">
+              <td>{{@lot.id}}</td>
+              <td>{{@lot.reference}}</td>
+              <td>{{@lot.quantite_servis}}</td>
+              <td>{{@lot.poids}}</td>
+              <td>{{@lot.date_fabrication}}</td>
+              <td>{{@lot.date_reception_guinault}}</td>
+              <td>{{@lot.date_reception_dee}}</td>
+              <td>{{@lot.quantite_rebut}}</td>
+              <td>
+                <button class="m-2 px-1 py-1 rounded-lg font-bold">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                    />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </repeat>
+          <!-- Lignes ajoutées dynamiquement -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal d'ajout/édition -->
+    <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h3 class="text-xl font-bold mb-4">Ajouter/Modifier un lot</h3>
+        <form id="formLotsToles">
+          <label for="reference" class="block text-gray-700">Référence :</label>
+          <input type="text" id="reference" name="reference" class="w-full border p-2 rounded-md mb-2" required />
+
+          <label for="quantite_servis" class="block text-gray-700">Quantité Servie :</label>
+          <input type="number" id="quantite_servis" name="quantite_servis" class="w-full border p-2 rounded-md mb-2" required />
+
+          <label for="poids" class="block text-gray-700">Poids:</label>
+          <input type="number" id="poids" name="poids" class="w-full border p-2 rounded-md mb-2" required />
+
+          <label for="quantite_rebut" class="block text-gray-700">Quantité Rebut :</label>
+          <input type="number" id="quantite_rebut" name="quantite_rebut" value="0" class="w-full border p-2 rounded-md mb-2" />
+
+          <label for="date_fabrication" class="block text-gray-700">Date Fabrication :</label>
+          <input type="date" id="date_fabrication" name="date_fabrication" class="w-full border p-2 rounded-md mb-2" required />
+
+          <label for="date_reception_guinault" class="block text-gray-700">Date Réception Guinault :</label>
+          <input type="date" id="date_reception_guinault" name="date_reception_guinault" class="w-full border p-2 rounded-md mb-2" required />
+
+          <label for="date_reception_dee" class="block text-gray-700">Date Réception DEE :</label>
+          <input type="date" id="date_reception_dee" name="date_reception_dee" class="w-full border p-2 rounded-md mb-2" required />
+
+          <div class="flex justify-end space-x-2 mt-4">
+            <button id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700">Annuler</button>
+            <button id="saveTole" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Récupérer le token CSRF depuis le cookie
+      const csrf_token = getCookie("csrf_token");
+
+      document.getElementById("openModal").addEventListener("click", function () {
+        document.getElementById("modal").classList.remove("hidden");
+      });
+
+      document.getElementById("closeModal").addEventListener("click", function () {
+        document.getElementById("modal").classList.add("hidden");
+      });
+
+      document.getElementById("formLotsToles").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const formLotsToles = document.getElementById("formLotsToles");
+        const data = {};
+        new FormData(formLotsToles).forEach((value, key) => {
+          data[key] = value;
+        });
+
+        const response = await fetch("/lots/toles/add", {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrf_token // Envoyer le token via un header
+          },
+          method: "POST",
+          body: JSON.stringify(data),
+          credentials: "include" // Important pour que les cookies soient envoyés
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          formLotsToles.reset();
+          document.getElementById("modal").classList.add("hidden");
+          location.reload();
+        }
+      });
+
+      // Fonction pour récupérer la valeur d'un cookie
+      function getCookie(name) {
+        let value = "; " + document.cookie;
+        let parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+    </script>
