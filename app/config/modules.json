@@ -1,3 +1,5 @@
 {
-  
+  "toles" : {
+    "enabled" : true
+  }
 }

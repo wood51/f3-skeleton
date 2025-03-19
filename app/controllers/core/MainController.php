@@ -24,7 +24,7 @@ class MainController extends BaseController
    */
   public function index($f3)
   {
-    $f3->menu = \MenuCore::instance()->loadMenu($f3->SESSION['role']);
+    $f3->menu = MenuCore::instance()->loadMenu($f3->SESSION['role']);
     echo \Template::instance()->render("/core/templates/layout.html");
   }
 }
