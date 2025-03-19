@@ -163,7 +163,7 @@ class ModulesCore extends \Prefab
             // Pour chaque module activé, ajoute son chemin de contrôleur
             foreach ($this->module_list as $module) {
                 if ($this->is_enabled($module)) {
-                    $paths[] = "app/controllers/$module/";
+                    $paths[] = "app/controllers/$module/|app/models/$module";
                 }
             }
         } else {
