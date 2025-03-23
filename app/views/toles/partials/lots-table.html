@@ -1,0 +1,52 @@
+<table class="w-full border-collapse border border-gray-300">
+  <thead>
+    <tr class="bg-blue-200">
+      <th class="border p-2">N° de lot</th>
+      <th class="border p-2">Référence</th>
+      <th class="border p-2">Quantité Servie</th>
+      <th class="border p-2">Poids</th>
+      <th class="border p-2">Date de Fabrication</th>
+      <th class="border p-2">Date de Reception Guinault</th>
+      <th class="border p-2">Date de Reception Dee</th>
+      <th class="border p-2">Quantité Rebut</th>
+      <th class="border p-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody id="lotsTable">
+    <repeat group="{{@lots}}" value="{{@lot}}">
+      <tr class="text-center">
+        <td>{{@lot.id}}</td>
+        <td>{{@lot.reference}}</td>
+        <td>{{@lot.quantite_servie}}</td>
+        <td>{{@lot.poids}}</td>
+        <td>{{!isset(@lot.date_fabrication) ? "NR" : date("d/m/Y", strtotime(@lot.date_fabrication))}}</td>
+        <td>{{!isset(@lot.date_reception_guinault) ? "NR" : date("d/m/Y", strtotime(@lot.date_reception_guinault))}}</td>
+        <td>{{!isset(@lot.date_reception_dee) ? "NR" : date("d/m/Y", strtotime(@lot.date_reception_dee))}}</td>
+        <td>{{@lot.quantite_rebut}}</td>
+        <td>
+          <button hx-get="/toles/{{@lot.id}}/edit" hx-target="#modal" hx-swap="innerHTML" class="m-2 px-1 py-1 rounded-lg ">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+              <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <button
+            hx-delete="/toles/{{@lot.id}}/delete"
+            hx-confirm="Supprimer ce lot ?"
+            hx-target="#lotsTableContainer"
+            hx-swap="innerHTML"
+            class="m-2 px-1 py-1 rounded-lg font-bold"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H3a1 1 0 100 2h1v10a2 2 0 002 2h8a2 2 0 002-2V6h1a1 1 0 100-2h-2V3a1 1 0 00-1-1H6zm2 4a1 1 0 012 0v8a1 1 0 11-2 0V6zm4 0a1 1 0 012 0v8a1 1 0 11-2 0V6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </td>
+      </tr>
+    </repeat>
+  </tbody>
+</table>

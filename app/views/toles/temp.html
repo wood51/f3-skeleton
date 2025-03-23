@@ -1,0 +1,80 @@
+<!-- Modal d'ajout/édition -->
+<div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h3 class="text-xl font-bold mb-4">Ajouter/Modifier un lot</h3>
+      <form id="formLotsToles">
+        <label for="reference" class="block text-gray-700">Référence :</label>
+        <input type="text" id="reference" name="reference" class="w-full border p-2 rounded-md mb-2" required />
+  
+        <label for="quantite_servis" class="block text-gray-700">Quantité Servie :</label>
+        <input type="number" id="quantite_servis" name="quantite_servis" class="w-full border p-2 rounded-md mb-2" required />
+  
+        <label for="poids" class="block text-gray-700">Poids:</label>
+        <input type="number" id="poids" name="poids" class="w-full border p-2 rounded-md mb-2" required />
+  
+        <label for="quantite_rebut" class="block text-gray-700">Quantité Rebut :</label>
+        <input type="number" id="quantite_rebut" name="quantite_rebut" value="0" class="w-full border p-2 rounded-md mb-2" />
+  
+        <label for="date_fabrication" class="block text-gray-700">Date Fabrication :</label>
+        <input type="date" id="date_fabrication" name="date_fabrication" class="w-full border p-2 rounded-md mb-2" required />
+  
+        <label for="date_reception_guinault" class="block text-gray-700">Date Réception Guinault :</label>
+        <input type="date" id="date_reception_guinault" name="date_reception_guinault" class="w-full border p-2 rounded-md mb-2" required />
+  
+        <label for="date_reception_dee" class="block text-gray-700">Date Réception DEE :</label>
+        <input type="date" id="date_reception_dee" name="date_reception_dee" class="w-full border p-2 rounded-md mb-2" required />
+  
+        <div class="flex justify-end space-x-2 mt-4">
+          <button id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700">Annuler</button>
+          <button id="saveTole" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Récupérer le token CSRF depuis le cookie
+    const csrf_token = getCookie("csrf_token");
+  
+    document.getElementById("openModal").addEventListener("click", function () {
+      document.getElementById("modal").classList.remove("hidden");
+    });
+  
+    document.getElementById("closeModal").addEventListener("click", function () {
+      document.getElementById("modal").classList.add("hidden");
+    });
+  
+    document.getElementById("formLotsToles").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const formLotsToles = document.getElementById("formLotsToles");
+      const data = {};
+      new FormData(formLotsToles).forEach((value, key) => {
+        data[key] = value;
+      });
+  
+      const response = await fetch("/lots/toles/add", {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrf_token // Envoyer le token via un header
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+        credentials: "include" // Important pour que les cookies soient envoyés
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        formLotsToles.reset();
+        document.getElementById("modal").classList.add("hidden");
+        location.reload();
+      }
+    });
+  
+    // Fonction pour récupérer la valeur d'un cookie
+    function getCookie(name) {
+      let value = "; " + document.cookie;
+      let parts = value.split("; " + name + "=");
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+  </script>
+  
