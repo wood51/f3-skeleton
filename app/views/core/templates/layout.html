@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{@@title ?: 'GestProd DEE'}}</title>
     <link href="{{@BASE}}/{{@UI}}/core/css/output.css" rel="stylesheet" />
+    <script src="{{@BASE}}/node_modules/htmx.org/dist/htmx.min.js"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
   </head>
   <body class="flex bg-gray-100 h-screen overflow-hidden">
     <!-- Sidebar modulaire -->
@@ -49,13 +51,11 @@
         <div id="clock" class="font-mono text-gray-600 text-xl">12:00</div>
       </header>
 
-      <div class="p-6 flex-grow">
-        <check if="{{isset(@content)}}">
-          <include href="{{@content}}" />
-        </check>
-      </div>
-    </main>
+      
+      <check if="{{isset(@content)}}">
+        <include href="{{@content}}" />
+      </check>
 
-    <!-- <script type="module" src="{{@UI}}js/templates/admin/admin.js"></script> -->
+    </main>
   </body>
 </html>

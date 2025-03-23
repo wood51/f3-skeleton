@@ -28,5 +28,7 @@ $f3->TZ ="Europe/Paris";
 $modules = \ModulesCore::instance();
 $modules->load();
 AnnotationRoutingPlugin::instance();
+Falsum\Run::handler();
+
 
 $f3->run();

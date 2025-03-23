@@ -6,4 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Falsum\\' => array($vendorDir . '/ikkez/f3-falsum/src/Falsum'),
 );

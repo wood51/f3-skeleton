@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "watch:css":"tailwindcss -i ./app/views/core/css/styles.css -o ./app/views/core/css/output.css --watch",
-    "build:css":"tailwindcss -i ./app/views/core/css/styles.css -o ./app/views/core/css/output.css --minify"
+    "watch:css": "tailwindcss -i ./app/views/core/css/styles.css -o ./app/views/core/css/output.css --watch",
+    "build:css": "tailwindcss -i ./app/views/core/css/styles.css -o ./app/views/core/css/output.css --minify"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "autoprefixer": "^10.4.21",
+    "htmx.org": "^2.0.4",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.0.14"
   }

@@ -1,11 +1,26 @@
 <?php
 class TolesService extends \Prefab
 {
-    public function get_all_lots() {
-        $lots = new TolesModel(\Base::instance()->DB);
+    public function get_all_lots()
+    {
+        $lots = new TolesModel();
         $results = $lots->all();
+        return array_map([$lots, 'cast'], $results);
+    }
 
-        // return array_map([])
-        
+    public function get_lot($id)
+    {
+        $lot = new TolesModel();
+        return  $lot->get_by_id($id);
+    }
+
+    public function save_lot($data) {
+        $lots = new TolesModel();
+        $lots->save_lot($data);
+    }
+
+    public function delete_lot($id) {
+        $lot = new TolesModel();
+        $lot->delete_lot($id);
     }
 }

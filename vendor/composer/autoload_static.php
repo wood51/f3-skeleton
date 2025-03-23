@@ -6,6 +6,20 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit8dfe3eda8021c5e2c4357fa9888feff6
 {
+    public static $prefixLengthsPsr4 = array (
+        'F' => 
+        array (
+            'Falsum\\' => 7,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Falsum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ikkez/f3-falsum/src/Falsum',
+        ),
+    );
+
     public static $classMap = array (
         'AnnotationRoutingPlugin' => __DIR__ . '/..' . '/wood51/f3-route/src/AnnotationRoutingPlugin.php',
         'Audit' => __DIR__ . '/..' . '/bcosca/fatfree-core/audit.php',
@@ -56,6 +70,8 @@ class ComposerStaticInit8dfe3eda8021c5e2c4357fa9888feff6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8dfe3eda8021c5e2c4357fa9888feff6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8dfe3eda8021c5e2c4357fa9888feff6::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit8dfe3eda8021c5e2c4357fa9888feff6::$classMap;
 
         }, null, ClassLoader::class);
