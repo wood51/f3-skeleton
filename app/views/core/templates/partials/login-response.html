@@ -1,0 +1,8 @@
+<check if="{{ isset(@success) }}">
+    <p class="success hidden">Connexion OK</p>
+  </check>
+  
+  <check if="{{ isset(@error) }}">
+    <p class="text-red-600">{{ @error }}</p>
+  </check>
+  

@@ -4,15 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{@@title ?: 'GestProd DEE'}}</title>
-    <link href="{{@BASE}}/{{@UI}}/core/css/output.css" rel="stylesheet" />
-    <script src="{{@BASE}}/node_modules/htmx.org/dist/htmx.min.js"></script>
-    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+    <link rel="shortcut icon" href="{{@BASE}}/{{@UI}}/assets/img/gear.png" type="image/png" />
+    <link href="{{@BASE}}/{{@UI}}/assets/css/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{@BASE}}/{{@UI}}/assets/css/all.min.css" />
+    <script src="{{@BASE}}/{{@UI}}/assets/js/htmx.min.js"></script>
+    <script src="{{@BASE}}/{{@UI}}/assets/js/_hyperscript.min.js"></script>
   </head>
   <body class="flex bg-gray-100 h-screen overflow-hidden">
     <!-- Sidebar modulaire -->
     <aside class="w-64 bg-gray-800 text-white flex flex-col">
       <div class="h-24 flex items-center justify-center border-b border-gray-700">
-        <img src="{{@BASE}}/{{@UI}}/assets/gear.png" width="60" />
+        <img src="{{@BASE}}/{{@UI}}/assets/img/gear.png" width="60" />
         <a href="/admin"><span class="text-3xl font-semibold text-indigo-400">GestProd</span></a>
       </div>
 
@@ -47,15 +49,14 @@
     <!-- Zone contenu principal -->
     <main class="flex-1 flex flex-col overflow-auto">
       <header class="bg-white h-24 shadow px-6 flex items-center justify-between">
-        <h1 class="text-3xl font-semibold text-gray-800">{{@@page_title ?: 'Bienvenue'}}</h1>
+        <h1 class="text-3xl font-semibold text-gray-800">{{@@page_title ?: "Bienvenue" }}</h1>
         <div id="clock" class="font-mono text-gray-600 text-xl">12:00</div>
       </header>
 
-      
       <check if="{{isset(@content)}}">
         <include href="{{@content}}" />
       </check>
-
     </main>
+    <div id="toast-container" hx-target="this" hx-swap="innerHTML"></div>
   </body>
 </html>

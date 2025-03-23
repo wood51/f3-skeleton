@@ -7,18 +7,11 @@ class AuthController
      */
     public function login_page($f3)
     {
-        $f3->set('SESSION.csrf_token', bin2hex(random_bytes(32)));
-        setcookie(
-            "csrf_token",
-            $f3->get('SESSION.csrf_token'),
-            [
-                "expires" => time() + 3600,
-                "path" => "/",
-                "secure" => true,
-                "httponly" => false,
-                "samesite" => "Strict"
-            ]
-        );
+        if (!$f3->exists('SESSION.csrf_token')) {
+            $f3->set('SESSION.csrf_token', bin2hex(random_bytes(32)));
+        }
+
+        $f3->set('csrf_token', $f3->get('SESSION.csrf_token'));
         echo \Template::instance()->render("/core/templates/login.html");
     }
 
@@ -27,69 +20,49 @@ class AuthController
      */
     public function login($f3)
     {
-        $db = $f3->get("DB");
-        $data = json_decode($f3->get("BODY"), true);
+        $data = $f3->get('POST');
 
-        $username = $data["username"];
-        $password = $data["password"];
+        $username = $data["username"] ?? null;
+        $password = $data["password"] ?? null;
+        $csrf_token = $data["csrf_token"] ?? null;
 
-        // Récupérer le token CSRF depuis les headers HTTP
-        $csrf_token = $f3->get('HEADERS.X-Csrf-Token');
-
-        if (!isset($csrf_token) || $csrf_token !== $f3->get("SESSION.csrf_token")) {
-            header("Content-Type: application/json");
-            http_response_code(403);
-            echo json_encode(["error" => "Token CSRF invalide"]);
+        if ($csrf_token !== $f3->get("SESSION.csrf_token")) {
+            $f3->set('error', 'Erreur CSRF. Veuillez recharger la page.');
+            echo \Template::instance()->render("/core/templates/partials/login-response.html");
             return;
         }
 
-        if (!isset($username, $password)) {
-            header("Content-Type: application/json");
-            http_response_code(400);
-            echo json_encode(["error" => "Nom d'utlisateur et mots de passe requis"]);
+        if (!$username || !$password) {
+            // $f3->set('error', 'Identifiants requis.');
+            // echo \Template::instance()->render("/core/templates/partials/login-response.html");
+            $f3->set('error', 'Identifiants incorrects');
+            echo \Template::instance()->render('/core/templates/partials/toast.html');
             return;
         }
 
-        $user = new DB\SQL\Mapper($db, "users");
+        $user = new DB\SQL\Mapper($f3->get("DB"), "users");
         $fetch = $user->findone(["username = ?", htmlspecialchars($username)]);
 
-        if (!$fetch) {
-            header("Content-Type: application/json");
-            http_response_code(401);
-            echo json_encode(["error" => "Utilisateur introuvable"]);
+        if (!$fetch || !password_verify($password, $fetch["password"])) {
+            // $f3->set('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
+            // echo \Template::instance()->render("/core/templates/partials/login-response.html");
+            $f3->set('error', 'Identifiants incorrects');
+            echo \Template::instance()->render('/core/templates/partials/toast.html');
             return;
         }
 
-        if (!password_verify($password, $fetch["password"])) {
-            header("Content-Type: application/json");
-            http_response_code(401);
-            echo json_encode(["error" => "Mot de passe incorrect"]);
-            return;
-        }
-
-
+        // Auth OK
         $f3->set("SESSION.user_id", $fetch["id"]);
         $f3->set("SESSION.nom", $fetch["nom"]);
         $f3->set("SESSION.prenom", $fetch["prenom"]);
         $f3->set("SESSION.username", $fetch["username"]);
         $f3->set("SESSION.role", $fetch["role"]);
 
-
-
-
-        header("Content-Type: application/json");
-        http_response_code(200);
-        echo json_encode([
-            "message" => "Connexion réussie",
-            "user" => [
-                "id" =>  $fetch["id"],
-                "nom" => $fetch["nom"],
-                "prenom" => $fetch["prenom"],
-                "username" => $fetch["username"],
-                "role" => $fetch["role"]
-            ]
-        ]);
+        $f3->set('toast', 'Connexion OK');
+        echo \Template::instance()->render('/core/templates/partials/toast.html');
     }
+
+
 
     /**
      * @route("GET /logout")
