@@ -4,6 +4,8 @@
       <th class="border p-2">N° de lot</th>
       <th class="border p-2">Infos</th>
       <th class="border p-2">Référence</th>
+      <th class="border p-2">Cmd Fournisseur</th>
+      <th class="border p-2">Cmd Guinault</th>
       <th class="border p-2">Quantité Servie</th>
       <th class="border p-2">Poids</th>
       <th class="border p-2">Date de Fabrication</th>
@@ -46,6 +48,8 @@
         </td>
         
         <td>{{@lot.reference}}</td>
+        <td>{{@lot.no_commande_fournisseur}}</td>
+        <td>{{@lot.no_commande_guinault}}</td>
         <td>{{@lot.quantite_servie}}</td>
         <td>{{@lot.poids}}</td>
         <td>{{!isset(@lot.date_fabrication) ? "<span class='text-gray-400 italic' title='Non renseigné'>NR</span>" : date("d/m/Y", strtotime(@lot.date_fabrication))}}</td>

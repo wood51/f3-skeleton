@@ -2,6 +2,9 @@
 
 require("vendor/autoload.php");
 
+use Minishlink\WebPush\WebPush;
+use Minishlink\WebPush\Subscription;
+
 $f3 = \Base::instance();
 $f3->DEBUG = 3;
 $f3->PACKAGE ="wood51";
@@ -21,14 +24,19 @@ try {
     die("Erreur de connexion à MariaDB : " . $e->getMessage());
 }
 
+
 $f3->AUTOLOAD = "app/controllers/core/|app/controllers/core/auth/|app/services/core/";
 $f3->UI ="app/views";
 $f3->TZ ="Europe/Paris";
+
+
+
+
+
 
 $modules = \ModulesCore::instance();
 $modules->load();
 AnnotationRoutingPlugin::instance();
 Falsum\Run::handler();
-
-
 $f3->run();
+
