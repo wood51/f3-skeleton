@@ -30,7 +30,11 @@ $f3->UI ="app/views";
 $f3->TZ ="Europe/Paris";
 
 
-
+$f3->set('vapid', [
+    'subject' => 'gestrpod@guinault.com',
+    'publicKey' => getenv('VAPID_PUBLIC'),
+    'privateKey' => getenv('VAPID_PRIVATE'),
+]);
 
 
 
