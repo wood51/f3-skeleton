@@ -43,18 +43,26 @@ class TolesController extends MainController
      */
     function add($f3)
     {
-        $data = $f3->get('POST');
-        // Nettoyage basique des champs vides → null
-        foreach ($data as $key => $value) {
-            if ($value === '') {
-                $data[$key] = null;
+        try {
+            $data = $f3->get('POST');
+            // Nettoyage basique des champs vides → null
+            foreach ($data as $key => $value) {
+                if ($value === '') {
+                    $data[$key] = null;
+                }
             }
+
+            \TolesService::instance()->save_lot($data);
+
+            http_response_code(200);
+            $f3->lots = \TolesService::instance()->get_all_lots();
+            echo \Template::instance()->render("/toles/partials/lots-table.html");
+            
+        } catch (\Exception $ex) {
+            http_response_code(500);
+            $f3->error = $ex->getMessage();
+            echo \Template::instance()->render("/core/templates/partials/toast.html");
         }
-
-        \TolesService::instance()->save_lot($data);
-
-        $f3->lots = \TolesService::instance()->get_all_lots();
-        echo \Template::instance()->render("/toles/partials/lots-table.html");
     }
 
     /**

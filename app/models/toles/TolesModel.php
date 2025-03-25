@@ -7,9 +7,9 @@ class TolesModel extends DB\SQL\Mapper
         parent::__construct(Base::instance()->DB, "toles");
     }
 
-    public function all()
+    public function all_active()
     {
-        return $this->find();
+        return $this->find(["is_active = ?",1]);
     }
 
     public function get_by_id($id)
@@ -30,7 +30,8 @@ class TolesModel extends DB\SQL\Mapper
     public function delete_lot($id) {
         $this->load(['id = ?',$id]);
         if (!$this->dry()) {
-            $this->erase();
+            $this->is_active = 0 ;
+            $this->update();
         }
     }
 }
