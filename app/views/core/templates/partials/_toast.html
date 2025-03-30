@@ -1,0 +1,29 @@
+<check if="{{ isset(@toast) }}">
+  <div class="toast fixed top-4 right-4 flex items-center gap-3 px-5 py-3 rounded-lg shadow-lg text-white animate-fade-in-out z-50 
+    {{ 
+      (@toast.type == 'success' ? 'bg-green-500' :
+      (@toast.type == 'info'    ? 'bg-blue-500'  :
+      (@toast.type == 'warming' ? 'bg-yellow-500' :
+      (@toast.type == 'error'   ? 'bg-red-600'    :
+                                  'bg-gray-600'))))
+    }}"
+    _="init wait 5s then remove me"
+  >
+    <i
+      class="fas {{ 
+      @toast.icon ??
+      (@toast.type == 'success' ? 'fa-check-circle' :
+      (@toast.type == 'info'    ? 'fa-info-circle' :
+      (@toast.type == 'warming' ? 'fa-exclamation-triangle' :
+      (@toast.type == 'error'   ? 'fa-times-circle' :
+                                  'fa-bell'))))
+    }} text-xl"
+    ></i>
+
+    <span class="flex-1">{{ @toast.message }}</span>
+
+    <button class="text-white text-lg" _="on click remove closest .toast">
+      <i class="fas fa-times"></i>
+    </button> 
+  </div>
+</check>

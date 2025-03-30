@@ -1,0 +1,158 @@
+<div class="modal fixed inset-0 z-50 flex items-center justify-center" style="background-color: rgba(0, 0, 0, 0.5)" tabindex="-1" _="on click if event.target is me then remove me">
+  <div class="bg-gray-800 text-white rounded-xl w-full max-w-2xl shadow-lg p-6 relative">
+    <!-- Bouton fermeture -->
+    <button class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl" _="on click remove closest .modal">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Titre -->
+    <h2 class="text-2xl font-bold text-indigo-400 mb-4">Paramètres</h2>
+
+    <!-- Onglets -->
+    <div class="flex gap-2 border-b border-gray-600 mb-4">
+      <!-- ⚙️ Onglet Préférences -->
+      <button
+        class="tab-btn group px-4 py-2 text-sm font-medium border-b-2 border-indigo-500 text-indigo-400 flex items-center gap-2"
+        _="on click 
+            for el in .tab-btn remove .border-indigo-500 from el remove .text-indigo-400 from el add .border-transparent to el add .text-gray-300 to el end
+            remove .border-transparent from me
+            remove .text-gray-300 from me
+            add .border-indigo-500 to me
+            add .text-indigo-400 to me
+            then remove .hidden from #tab-preferences
+            then add .hidden to #tab-mdp"
+      >
+        <i class="fas fa-cog group-[.text-indigo-400]:text-indigo-400 text-gray-400"></i>
+        Préférences
+      </button>
+
+      <!-- 🔐 Onglet Mot de passe -->
+      <button
+        class="tab-btn group px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-300 flex items-center gap-2"
+        _="on click 
+            for el in .tab-btn remove .border-indigo-500 from el remove .text-indigo-400 from el add .border-transparent to el add .text-gray-300 to el end
+            remove .border-transparent from me
+            remove .text-gray-300 from me
+            add .border-indigo-500 to me
+            add .text-indigo-400 to me
+            then remove .hidden from #tab-mdp
+            then add .hidden to #tab-preferences"
+      >
+        <i class="fas fa-lock group-[.text-indigo-400]:text-indigo-400 text-gray-400"></i>
+        Mot de passe
+      </button>
+    </div>
+
+    <!-- ⚙️ Onglet Préférences -->
+    <div id="tab-preferences" class="min-h-[280px] flex flex-col justify-center items-center gap-10">
+      <!-- 🌗 Thème -->
+      <div class="w-full max-w-sm text-center">
+        <label class="block text-sm text-gray-300 mb-3">Thème :</label>
+        <div class="rounded-xl px-6 py-3 flex items-center justify-center gap-6 shadow-inner">
+          <span class="text-white"><i class="fa-regular fa-sun"></i></span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="theme-toggle" class="sr-only peer" hx-get="/user/prefs/theme" hx-vals='js:{"theme": event.target.checked ? "dark" : "light"}'
+            hx-trigger="change" hx-swap="none" _="on change if my.checked then add .dark to
+            <html />
+            else remove .dark from
+            <html />
+            " {{@SESSION.theme == 'dark'? 'checked' : ''}} />
+            <div class="w-12 h-6 bg-gray-600 peer-focus:ring-2 peer-focus:ring-indigo-500 rounded-full peer dark:bg-gray-700 peer-checked:bg-indigo-500 transition-all"></div>
+            <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-6"></div>
+          </label>
+          <span class="text-white"><i class="fa-regular fa-moon"></i></span>
+        </div>
+      </div>
+
+      <!-- 🌍 Langue -->
+      <div class="w-full max-w-sm text-center">
+        <label class="block text-sm text-gray-300 mb-3">Langue :</label>
+        <div class="relative" id="lang-dropdown">
+          <button
+            type="button"
+            class="flex items-center justify-between w-full rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-white border border-indigo-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            _="on click toggle .hidden on #lang-menu"
+          >
+            <!-- Groupé au centre -->
+            <check if="{{isset(@SESSION.lang) && @SESSION.lang=='ar'}}">
+              <true
+                ><span id="lang-current" class="flex items-center gap-2">
+                  <img src="https://flagcdn.com/sa.svg" class="w-5 h-3" alt="AR" />
+                  العربية
+                </span></true
+              >
+              <false>
+                <span id="lang-current" class="flex items-center gap-2">
+                  <img src="https://flagcdn.com/fr.svg" class="w-5 h-3" alt="AR" />
+                  Français
+                </span>
+              </false>
+            </check>
+
+            <!-- Chevron à droite -->
+            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+          </button>
+
+          <!-- Menu déroulant -->
+          <ul
+            id="lang-menu"
+            class="absolute left-0 mt-2 w-full origin-top-right bg-gray-800 divide-y divide-gray-600 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 hidden z-50"
+          >
+            <li>
+              <button
+                class="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-white hover:bg-gray-700"
+                hx-get="/user/prefs/lang"
+                hx-vals="js:{'lang':'fr'}"
+                hx-swap="none"
+                _="on click
+                 put '<img src=https://flagcdn.com/fr.svg class=&quot;w-5 h-3 mr-2&quot; /> Français' into #lang-current
+                add .hidden to #lang-menu"
+              >
+                <img src="https://flagcdn.com/fr.svg" class="w-5 h-3" />
+                Français
+              </button>
+            </li>
+            <li>
+              <button
+                class="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-white hover:bg-gray-700"
+                hx-get="/user/prefs/lang"
+                hx-vals="js:{'lang':'ar'}"
+                hx-swap="none"
+                _="on click 
+                  put '<img src=https://flagcdn.com/sa.svg class=&quot;w-5 h-3 mr-2&quot; /> العربية' into #lang-current
+                  add .hidden to #lang-menu"
+              >
+                <img src="https://flagcdn.com/sa.svg" class="w-5 h-3" />
+                Arabe
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔐 Onglet Mot de passe -->
+    <div id="tab-mdp" class="hidden min-h-[280px]">
+      <form
+      hx-post="/user/prefs/password"
+      hx-swap="none"
+      >
+        <div class="mb-4">
+          <label class="block text-sm text-gray-300 mb-1">Ancien mot de passe</label>
+          <input type="password" name="old" class="w-full bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm text-gray-300 mb-1">Nouveau mot de passe</label>
+          <input type="password" name="new" class="w-full bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm text-gray-300 mb-1">Confirmer</label>
+          <input type="password" name="confirm" class="w-full bg-gray-700 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div class="flex justify-end">
+          <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

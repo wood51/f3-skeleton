@@ -1,0 +1,10 @@
+<div
+  hx-get="/inbox/messages"
+  hx-target="#message-table"
+  hx-swap="innerHTML"
+  hx-trigger="load"
+  class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100 hover:shadow-xl transition"
+>
+  <h2 class="text-lg font-semibold mb-2 text-indigo-500">Boite de réception</h2>
+  <div id="message-table"></div>
+</div>

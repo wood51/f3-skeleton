@@ -6,9 +6,12 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libicu-dev \ 
+    && docker-php-ext-install mysqli pdo_mysql intl \
     && docker-php-ext-install mysqli pdo_mysql \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd
+
 
 RUN  pecl install apcu \
     && docker-php-ext-enable apcu

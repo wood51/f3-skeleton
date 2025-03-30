@@ -1,0 +1,38 @@
+<aside class="w-64 bg-gray-700  shadow-md hidden md:block pb-6 px-4">
+  <nav>
+    <ul class="space-y-2 text-white">
+      <!-- Séparateur -->
+      <li><hr class="border-t border-gray-500 mb-2" /></li>
+      <li class="flex items-center justify-around gap-4 w-full py-2">
+        <a href="#" class="text-gray-500 hover:text-indigo-500 text-xl" title="Notification">
+          <i class="fas fa-bell relative">
+            <span class="absolute top-[-6px] right-[-6px] inline-block w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+          </i>
+        </a>
+         <a href="#" class="text-gray-500 hover:text-indigo-500 text-xl" title="Paramètres" hx-get="/user/parametres" hx-target="body" hx-swap="beforeend">
+          <i class="fas fa-cog"></i>
+        </a>
+        <a class="text-gray-500 hover:text-indigo-500 text-xl" hx-get="/logout" hx-swap="none" title="Déconnexion">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </li>
+
+      <!-- Nom utilisateur -->
+      <li class="px-4 py-2 text-lg text-center text-gray-400">Bienvenue, <span class="text-white font-semibold">{{@SESSION.prenom | ucfirst}}</span></li>
+      <!-- Séparateur -->
+      <li><hr class="border-t border-gray-500 my-2" /></li>
+      <li>
+        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Tableau de bord</a>
+      </li>
+      <li>
+        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Suivi production</a>
+      </li>
+      <li>
+        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Planning</a>
+      </li>
+      <li>
+        <a href="/inbox"  hx-get="/inbox" hx-target="#main-content" hx-swap="innerHTML" class="block py-2 px-4 rounded hover:bg-gray-700">Messages</a>
+      </li>
+    </ul>
+  </nav>
+</aside>

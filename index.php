@@ -6,6 +6,12 @@ use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
 
 $f3 = \Base::instance();
+$f3->LANGUAGE='fr';
+$f3->AUTOLOAD = "app/controllers/core/|app/controllers/core/auth/|app/services/core/";
+$f3->UI ="app/views";
+//$f3->LOCALES = "app/dict/";
+$f3->TZ ="Europe/Paris";
+
 $f3->DEBUG = 3;
 $f3->PACKAGE ="wood51";
 
@@ -25,22 +31,9 @@ try {
 }
 
 
-$f3->AUTOLOAD = "app/controllers/core/|app/controllers/core/auth/|app/services/core/";
-$f3->UI ="app/views";
-$f3->TZ ="Europe/Paris";
-
-
-$f3->set('vapid', [
-    'subject' => 'gestrpod@guinault.com',
-    'publicKey' => getenv('VAPID_PUBLIC'),
-    'privateKey' => getenv('VAPID_PRIVATE'),
-]);
-
-
-
 $modules = \ModulesCore::instance();
 $modules->load();
 AnnotationRoutingPlugin::instance();
-Falsum\Run::handler();
+//Falsum\Run::handler();
 $f3->run();
 

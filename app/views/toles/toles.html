@@ -6,6 +6,103 @@
   <button hx-get="/toles/form" hx-target="#modal" hx-swap="innerHTML" class="bg-blue-500 text-white px-4 py-2 rounded m-4">+ Ajouter un lot</button>
   <div id="modal" class="w-1/2"></div>
 
+  <div class="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-6">Ajouter un lot</h2>
+    <form hx-post="/lots/ajouter" hx-swap="none" class="space-y-6">
+      
+        <div class="grid grid-cols-1 md:grid-cols-1">
+          <label class="label">Référence</label>
+          <select name="reference" required class="form-input" >
+            <option>ALTS00730 - TOLES STAOTR BLAGH BLAH 191 ENCOCHES</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="label">N° Cmde Fournisseur</label>
+          <input name="commande_fournisseur" class="form-input" />
+        </div>
+
+        <div>
+          <label class="label">N° Cmde Guinault</label>
+          <input name="commande_guinault" class="form-input" />
+        </div>
+        <div>
+          <label class="label">Quantité Servie</label>
+          <input name="quantite_servie" type="number" class="form-input" />
+        </div>
+
+        <div>
+          <label class="label">Quantité Rebut</label>
+          <input name="quantite_rebut" type="number" value="0" class="form-input" />
+        </div>
+
+        <div>
+          <label class="label">Date Fabrication</label>
+          <input name="date_fabrication" type="date" class="form-input" />
+        </div>
+        <div>
+          <label class="label">Date Réception Guinault</label>
+          <input name="date_reception_fournisseur" type="date" class="form-input " />
+        </div>
+
+        <div>
+          <label class="label">Date Réception DEE</label>
+          <input name="date_reception_dee" type="date" class="form-input" />
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Commentaires <span class="ml-1">🖉</span></label>
+        <textarea name="observations" rows="3" class="form-input"></textarea>
+      </div>
+
+      <!-- Bloc dynamique HTMX pour fournisseur -->
+      <div id="bloc-fournisseur" class="hidden mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="label">Réf Client</label>
+          <input type="text" name="ref_client" class="form-input" />
+        </div>
+        <div>
+          <label class="label">Plan Client</label>
+          <input type="text" name="plan_client" class="form-input" />
+        </div>
+        <div>
+          <label class="label">Indice Plan</label>
+          <input type="text" name="indice_plan" class="form-input" />
+        </div>
+      </div>
+
+      <!-- Déclaration FNC -->
+      <div>
+        <label class="label inline-flex items-center">
+          <input type="checkbox" name="fnc_declaree" id="toggle-fnc" class="form-checkbox" _="on change toggle .hidden on #bloc-fnc" />
+          <span class="ml-2">FNC déclarée</span>
+        </label>
+
+        
+        <div id="bloc-fnc" class="hidden mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="label">Numéro FNC</label>
+            <input name="no_fnc_detail" class="form-input" />
+          </div>
+          <div>
+            <label class="label">Date FNC</label>
+            <input type="date" name="date_fnc" class="form-input" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloc dynamique HTMX pour fournisseur -->
+      <div id="bloc-fournisseur"></div>
+
+      <div class="flex justify-end space-x-2">
+        <button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md">Annuler</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
   <div id="lotsTableContainer">
     <!-- la table entière sera injectée ici -->
     <include href="/toles/partials/lots-table.html" />

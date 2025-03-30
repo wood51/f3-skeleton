@@ -57,9 +57,9 @@ class AuthController
         $f3->set("SESSION.prenom", $fetch["prenom"]);
         $f3->set("SESSION.username", $fetch["username"]);
         $f3->set("SESSION.role", $fetch["role"]);
-
-        $f3->set('toast', 'Connexion OK');
-        echo \Template::instance()->render('/core/templates/partials/toast.html');
+        $f3->set("SESSION.theme", $fetch["theme"]);
+        $f3->set("SESSION.lang", $fetch["lang"]);
+        header('HX-Redirect: /');
     }
 
 
@@ -70,7 +70,8 @@ class AuthController
     public function logout($f3)
     {
         $f3->clear("SESSION");
-        $f3->reroute("/login");
+        // $f3->reroute("/login");
+        header('HX-Redirect: /login');
     }
 
     /**
