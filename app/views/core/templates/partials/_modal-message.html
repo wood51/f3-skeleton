@@ -1,0 +1,18 @@
+<div class="w-full max-w-xl bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h2 class="text-lg font-bold mb-2 text-indigo-600">{{ @sujet }}</h2>
+    <p class="text-sm text-gray-500 mb-4">
+      De : {{ @expediteur }}<br>
+      Envoyé le : {{ @date_envoi }}
+    </p>
+    <!-- <div class="prose dark:prose-invert max-h-96 overflow-y-auto"> -->
+    <div class="text-gray-500 max-h-96 overflow-y-auto">
+      {{ @message | raw }}
+    </div>
+    <div class="mt-6 text-right">
+      <button
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+        _="on click remove .flex from #modal then add .hidden to #modal">
+        Fermer
+      </button>
+    </div>
+  </div>

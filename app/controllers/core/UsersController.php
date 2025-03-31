@@ -1,5 +1,5 @@
 <?php
-class UserController extends BaseController
+class UsersController extends BaseController
 {
 
   /**
@@ -17,7 +17,7 @@ class UserController extends BaseController
   {
     $lang =  $f3->GET['lang'];
     if ($lang) {
-      $user = new \DB\SQL\Mapper($f3->DB, "user");
+      $user = new \DB\SQL\Mapper($f3->DB, "users");
       $user->load(['id = ?', $f3->SESSION['user_id']]);
       if (!$user->dry()) {
         $user->lang = $lang;
@@ -33,7 +33,7 @@ class UserController extends BaseController
   {
     $theme = $f3->GET['theme'];
     if ($theme) {
-      $user = new \DB\SQL\Mapper($f3->DB, "user");
+      $user = new \DB\SQL\Mapper($f3->DB, "users");
       $user->load(['id = ?', $f3->SESSION['user_id']]);
       if (!$user->dry()) {
         $user->theme = $theme;
@@ -82,9 +82,8 @@ class UserController extends BaseController
         throw new Exception("La confirmation du mots de passe a échoué");
       }
 
-      $user->password = password_hash($data["new"],PASSWORD_BCRYPT);
+      $user->password = password_hash($data["new"], PASSWORD_BCRYPT);
       $user->update();
-      
     } catch (\Exception $ex) {
       $f3->error($ex->getMessage());
     }

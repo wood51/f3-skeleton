@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" {{isset(@SESSION.theme) && (@SESSION.theme=="dark") ? "class='dark'" : ""}}>
+<html lang="fr" class="{{ @SESSION.theme == 'dark' ? 'dark' : '' }}">
   <include href="/core/templates/partials/_head.html" />
   <body class="bg-gray-200 dark:bg-gray-800 dark:text-gray-200 font-sans text-gray-800 overflow-hidden">
     <!-- Header global -->
@@ -12,7 +12,6 @@
 
       <!-- Contenu principal -->
       <main id="main-content" class="flex-1 p-6">
-
         <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="main-content">
           
           <div class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100 hover:shadow-xl transition">
@@ -48,6 +47,7 @@
         </div> -->
       </main>
     </div>
-   <div id="toast-container" class="fixed top-4 right-4 space-y-3 z-50"></div>
+    <div id="toast-container" class="fixed top-4 right-4 space-y-3 z-50"></div>
+    <include href="/core/templates/partials/_modal.html" />
   </body>
 </html>

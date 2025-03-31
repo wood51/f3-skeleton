@@ -1,30 +1,31 @@
 <table class="w-full text-left border">
-    <thead>
-      <tr class="bg-gray-100 dark:bg-gray-700">
-        <th class="p-2">Sujet</th>
-        <th class="p-2">Date</th>
-        <th class="p-2">Lu</th>
-        <th class="p-2">Action</th>
+  <thead>
+    <tr class="bg-gray-100 dark:bg-indigo-600">
+      <th class="p-2">Expediteur</th>
+      <th class="p-2">Sujet</th>
+      <th class="p-2">Date</th>
+      <th class="p-2">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <repeat group="{{ @messages }}" value="{{@msg}}">
+      <tr class="{{ @msg.is_read ? 'text-black' : 'text-black font-bold' }}">
+        <td class="p-2">{{@msg.expediteur |ucfirst}}</td>
+        <td class="p-2">{{ @msg.sujet }}</td>
+        <td class="p-2">{{ @msg.date_envoi }}</td>
+        <td class="p-2">
+          <button
+            hx-get="/inbox/message/{{@msg.id}}"
+            hx-target="#modal-content"
+            hx-swap="innerHTML"
+            hx-trigger="click"
+            _="on htmx:afterRequest add .flex to #modal then remove .hidden from #modal"
+            class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm"
+          >
+            Lire
+          </button>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <repeat group="{{ @messages }}" value="{{@msg}}">
-        <tr class="{{ @msg.is_read ? 'text-gray-500' : 'font-bold' }}">
-          <td class="p-2">{{ @msg.sujet }}</td>
-          <td class="p-2">{{ @msg.date_envoi }}</td>
-          <td class="p-2">{{ @msg.is_read ? 'Oui' : 'Non' }}</td>
-          <td class="p-2">
-            <button class="text-blue-600 hover:underline"
-                    hx-get="/inbox/message/{{ @msg.id }}"
-                    hx-target="#modal-content"
-                    hx-trigger="click"
-                    hx-swap="outerHTML"
-                    _="on htmx:afterRequest add .flex to #modal then remove .hidden from #modal">
-              Voir
-            </button>
-          </td>
-        </tr>
-      </repeat>
-    </tbody>
-  </table>
-  
+    </repeat>
+  </tbody>
+</table>

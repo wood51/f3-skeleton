@@ -18,21 +18,59 @@ class InboxController
     function get_messages($f3)
     {
         $messages = [];
-        $message_destinataire = new MessageDestinataireModel();
-        $msg_user =  $message_destinataire->get_message_list($f3->SESSION["user_id"]);
-        foreach ($msg_user as $msg) {
-            $m = new MessageModel();
-            $m->get_message($msg->message_id);
-            $messages[]=[
-                'id'=>$m->id,
-                "sujet"=>$m->sujet,
-                "date_envoi"=>$m->sent_at,
-                "is_read"=>$msg->is_read
-            ];
+        $inboxModel = new MessageDestinataireModel();
+        $receivedMessages = $inboxModel->get_message_list($f3->SESSION["user_id"]);
 
+        foreach ($receivedMessages as $entry) {
+            $messageModel = new MessageModel();
+
+            $messageModel->get_message($entry->message_id);
+            $sender = UsersModel::get_fullname_by_id($messageModel->expediteur_id);
+            $messages[] = [
+                'id'         => $messageModel->id,
+                'sujet'      => $messageModel->sujet,
+                'date_envoi' => $messageModel->sent_at,
+                'is_read'    => $entry->is_read,
+                'expediteur' => $sender
+            ];
         }
+
         $f3->messages = $messages;
         echo \Template::instance()->render('/core/templates/partials/_message-list.html');
     }
-    
+
+    /**
+     * @route("GET /inbox/message/@id")
+     */
+    function view_message($f3, $params)
+    {
+        $messageId = $params['id'];
+        $userId = $f3->SESSION['user_id'];
+
+        $dest = new MessageDestinataireModel();
+        $dest->load(['message_id = ? AND destinataire_id = ?', $messageId, $userId]);
+
+        if ($dest->dry()) {
+            http_response_code(403);
+            echo 'Message inaccessible';
+            return;
+        }
+
+        $message = new MessageModel();
+        $message->get_message($messageId);
+
+        $expediteur = UsersModel::get_fullname_by_id($message->expediteur_id);
+
+        if (!$dest->is_read) {
+            $dest->is_read = 1;
+            $dest->save();
+        }
+
+        $f3->set('sujet', $message->sujet);
+        $f3->set('date_envoi', $message->sent_at);
+        $f3->set('expediteur', $expediteur);
+        $f3->set('message', nl2br($message->message));
+
+        echo \Template::instance()->render('/core/templates/partials/_modal-message.html');
+    }
 }

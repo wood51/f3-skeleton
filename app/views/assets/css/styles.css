@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 @plugin 'tailgrids/plugin';
+@plugin "@tailwindcss/typography";
 
 @keyframes fade-in-out {
     0%,100% { opacity: 0; transform: translateY(-10px); }
