@@ -1,7 +1,9 @@
 <div id="modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
-    <div id="modal-content"
-         class="w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg"
-         hx-target="this"
-         hx-swap="outerHTML">
-         <!-- Le contenu sera injecté ici -->
-    </div>
+  <div
+    id="modal-content"
+    class="w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transform scale-95 opacity-0 transition-all duration-200 ease-out"
+    hx-target="this"
+    hx-swap="innerHTML"
+    _="on htmx:afterSettle add .scale-100 add .opacity-100 to me"
+  ></div>
+</div>

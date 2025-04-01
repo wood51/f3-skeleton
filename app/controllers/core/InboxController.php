@@ -1,7 +1,5 @@
 <?php
 
-use Jose\Component\KeyManagement\Analyzer\MessageBag;
-
 class InboxController
 {
     /**
@@ -70,7 +68,7 @@ class InboxController
         $f3->set('date_envoi', $message->sent_at);
         $f3->set('expediteur', $expediteur);
         $f3->set('message', nl2br($message->message));
-
-        echo \Template::instance()->render('/core/templates/partials/_modal-message.html');
+        header('HX-Trigger: refresh-inbox');
+        echo \Template::instance()->render('/core/templates/partials/_message-modal.html');
     }
 }
