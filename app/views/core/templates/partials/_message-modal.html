@@ -1,0 +1,22 @@
+<div class="relative">
+  <!-- CROIX DE FERMETURE -->
+  <button
+    class="absolute top-2 right-2 text-gray-300 hover:text-red-500 text-xl font-bold"
+    aria-label="Fermer"
+    _="on click remove .flex from #modal then add .hidden to #modal"
+   >
+    &times;
+  </button>
+
+  <!-- TITRE -->
+  <h2 class="text-lg font-bold mb-2 text-indigo-600">{{ @sujet }}</h2>
+
+  <!-- INFOS -->
+  <p class="text-sm text-gray-400 mb-4">
+    De : {{ @expediteur }}<br />
+    Envoyé le : {{ @date_envoi }}
+  </p>
+
+  <!-- CONTENU -->
+  <div class="prose dark:prose-invert max-h-96 overflow-y-auto text-gray-100">{{ @message | raw }}</div>
+</div>
