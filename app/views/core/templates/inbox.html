@@ -5,6 +5,13 @@
   hx-trigger="load"
   class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100 hover:shadow-xl transition"
 >
-  <h2 class="text-lg font-semibold mb-2 text-indigo-500">Boite de réception</h2>
-  <div id="message-table" hx-get="/inbox/messages" hx-trigger="refresh-inbox from:body" hx-swap="innerHTML"></div>
+  <h2 class="text-lg font-semibold mb-2 text-indigo-500  ">Boite de réception</h2>
+  <div class="flex justify-end">
+    <button hx-get="/inbox/message/write" hx-target="#modal-content" hx-swap="innerHTML" class="bg-indigo-500 text-white rounded px-2 py-1 mb-2">
+      Nouveau Message
+    </button>
+  </div>
+  <div id="message-table" hx-get="/inbox/messages" hx-trigger="refresh-inbox from:body" hx-swap="innerHTML">
+    <include href="/core/templates/partials/_message-list.html"></include>
+  </div>
 </div>

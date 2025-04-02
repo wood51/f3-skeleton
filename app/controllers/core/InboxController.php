@@ -2,11 +2,15 @@
 
 class InboxController
 {
+
+
     /**
      * @route("GET /inbox")
      */
     function inbox($f3)
     {
+        $user_id = $f3->SESSION["user_id"];
+        $f3->messages = MessageDestinataireModel::get_inbox_for($user_id);
         echo \Template::instance()->render('/core/templates/inbox.html');
     }
 
@@ -70,5 +74,12 @@ class InboxController
         $f3->set('message', nl2br($message->message));
         header('HX-Trigger: refresh-inbox');
         echo \Template::instance()->render('/core/templates/partials/_message-modal.html');
+    }
+
+    /**
+     * @route("GET /inbox/message/write")
+     */
+    public function write_message() {
+        echo \Template::instance()->render('/core/templates/partials/_message-write.html');
     }
 }
